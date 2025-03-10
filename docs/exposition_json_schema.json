@@ -1,0 +1,200 @@
+{
+  "name": "scripture_study",
+  "title": "Scripture Study Commentary",
+  "description": "This schema defines the structure for a comprehensive, verse-by-verse Bible commentary that is faithful, contextually rich, doctrinally sound, Christ-centered, clear, reliable, approachable, personal, reflective, and both expositional and practical. When populating array fields, ensure that the lists are exhaustive and varied—avoid formulaic outputs (e.g., always three items) and include as many items as needed to capture all relevant insights.",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "passage": {
+        "type": "string",
+        "description": "The Bible passage being commented on, quoted verbatim from the Berean Standard Bible (BSB)."
+      },
+      "context": {
+        "type": "string",
+        "description": "Historical, cultural, and linguistic background of the passage."
+      },
+      "key_themes": {
+        "type": "array",
+        "description": "Main theological themes in the passage. Include all relevant themes without limiting to a fixed number—provide as many items as the passage richness demands.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "theme": {
+              "type": "string",
+              "description": "A central theme or theological concept present in the passage."
+            },
+            "description": {
+              "type": "string",
+              "description": "A brief explanation of the theme."
+            }
+          },
+          "required": [
+            "theme",
+            "description"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "highlights": {
+        "type": "array",
+        "description": "A list of key highlights from the passage that capture its most striking or memorable insights. Each item should be a concise, well-explained blurb that provides a complete and useful explanation of the impact of the passage, selecting only the most powerful insights rather than listing every minor detail.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "expositions": {
+        "type": "array",
+        "description": "An exhaustive, verse-by-verse exposition breaking down every significant phrase in the passage. Each item should provide a comprehensive analysis for the verse, including multiple fragments if needed, to ensure that all key elements are addressed. Use as many tokens as necessary for a full response as this is the core of the response.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "verse": {
+              "type": "string",
+              "description": "The specific verse or section reference."
+            },
+            "fragments": {
+              "type": "array",
+              "description": "Breakdown of key phrases within the verse with commentary. Include as many fragments as necessary to provide an exhaustive analysis.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "quote": {
+                    "type": "string",
+                    "description": "A quoted segment or phrase from the verse."
+                  },
+                  "note": {
+                    "type": "string",
+                    "description": "Explanatory note or interpretation of the quoted phrase."
+                  }
+                },
+                "required": [
+                  "quote",
+                  "note"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "verse",
+            "fragments"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "cross_references": {
+        "type": "array",
+        "description": "Other Bible passages that relate to or illuminate the current passage. List all relevant references to support the commentary.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "reference": {
+              "type": "string",
+              "description": "The reference of the related Bible passage."
+            },
+            "note": {
+              "type": "string",
+              "description": "A brief note explaining the connection."
+            }
+          },
+          "required": [
+            "reference",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "alternative_interpretations": {
+        "type": "array",
+        "description": "Brief outline of significant alternative or minority interpretations on the passage that may be an empty list if there are none. If a minority interpretation is the primary focus, the majority interpretation should appear here. Otherwise, this field lists any interpretations other than the primary majority view.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the alternative interpretation."
+            },
+            "note": {
+              "type": "string",
+              "description": "A description or explanation of the alternative interpretation."
+            }
+          },
+          "required": [
+            "title",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "applications": {
+        "type": "array",
+        "description": "Practical takeaways and applications for Christian living derived from the passage. Ensure the list is exhaustive and reflects all applicable insights.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the application point."
+            },
+            "note": {
+              "type": "string",
+              "description": "A description or explanation of the application."
+            }
+          },
+          "required": [
+            "title",
+            "note"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "christ_centered_insights": {
+        "type": "array",
+        "description": "Insights explaining how the passage connects to Jesus Christ, salvation, and God's redemptive plan. Provide a varied and comprehensive list of insights.",
+        "items": {
+          "type": "string",
+          "description": "A single Christ-centered insight from the text."
+        }
+      },
+      "reflections": {
+        "type": "array",
+        "description": "Reflective questions or meditation prompts based on the passage. Include as many reflective prompts as necessary to encourage deep personal meditation.",
+        "items": {
+          "type": "string",
+          "description": "A reflective prompt."
+        }
+      },
+      "interpretation_type": {
+        "type": "string",
+        "enum": [
+          "majority",
+          "minority"
+        ],
+        "description": "Indicates whether the primary interpretation in the commentary is the majority (traditional) view or a minority (alternative) view."
+      },
+      "tags": {
+        "type": "array",
+        "description": "A collection of succinct metadata keywords that capture the passage's key theological themes, cultural context, and doctrinal elements. These tags aid in backend filtering and analysis - for example, tags might include 'creation', 'redemption', 'covenant', or 'historical context'.",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "passage",
+      "context",
+      "key_themes",
+      "highlights",
+      "expositions",
+      "cross_references",
+      "alternative_interpretations",
+      "applications",
+      "christ_centered_insights",
+      "reflections",
+      "interpretation_type",
+      "tags"
+    ],
+    "additionalProperties": false
+  },
+  "strict": true
+}
