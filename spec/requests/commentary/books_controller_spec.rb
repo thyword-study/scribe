@@ -18,7 +18,7 @@ module Commentary
         get commentary_book_path slug: 'genesis'
 
         aggregate_failures do
-          expect(response).to have_http_status(:ok)
+          expect(response).to have_http_status(:temporary_redirect)
           expect(response.content_type).to eq 'text/html; charset=utf-8'
         end
       end
