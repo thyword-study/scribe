@@ -136,4 +136,41 @@ class Section < ApplicationRecord
 
     prompt.join("").strip
   end
+
+  # Generates a batch of section data for processing, formatted as a collection
+  # of HTTP request payloads.
+  #
+  # This method retrieves the last system prompt and iterates through the given
+  # sections. It filters sections to include only those that are expositable,
+  # and for each valid section, it creates a corresponding user prompt and
+  # constructs a hash request to OpenAI's Responses API for the Batch API.
+  #
+  # @param [ActiveRecord::Relation] sections The sections to process.
+  # @return [Array<Hash>, nil] An array of hashes representing requests.
+  def self.batch_request_data(sections)
+    system_prompt = Exposition::SystemPrompt.last
+
+    sections.order(position: :asc).find_each(batch_size: 100).filter_map do |section|
+      next unless section.expositable?
+
+      user_prompt = Exposition::UserPrompt.create!(exposition_system_prompt: system_prompt, content: section.user_prompt)
+
+      {
+        custom_id: user_prompt.id.to_s,
+        method: "POST",
+        url: ExpositionService::ENDPOINT_RESPONSES,
+        body: {
+          input: user_prompt.content,
+          instructions: system_prompt.content,
+          max_output_tokens: ExpositionService::MAX_OUTPUT_TOKENS,
+          model: ExpositionService::MODEL,
+          text: { format: JSON.parse(Exposition::STRUCTURED_OUTPUT_JSON_SCHEMA) },
+          stream: false,
+          store: false,
+          temperature: ExpositionService::TEMPERATURE,
+          top_p: ExpositionService::TOP_P
+        }
+      }
+    end
+  end
 end
