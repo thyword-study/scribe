@@ -121,10 +121,11 @@ class ExpositionService
     batch
   end
 
-  # Uploads a JSONL batch file to OpenAI for processing.
+  # Uploads a JSONL batch file to OpenAI for processing and creates a
+  # corresponding batch request record in the database.
   #
-  # @param request_data [String] Array of hashes to convert to JSONL.
-  # @return [OpenAI::File] The uploaded file object.
+  # @param request_data [Array<Hash>] Array of hashes to convert to JSONL.
+  # @return [Exposition::BatchRequest] The created batch request record.
   # @raise [StandardError] If the API call fails, an error is raised.
   def upload_batch_file(request_data)
     begin
@@ -146,6 +147,11 @@ class ExpositionService
       end
     end
 
-    batch_file
+    Exposition::BatchRequest.create!(
+      name: File.basename(batch_file["filename"], ".jsonl"),
+      status: "requested",
+      input_file_id: batch_file["id"],
+      input_file_uploaded_at: Time.current,
+    )
   end
 end

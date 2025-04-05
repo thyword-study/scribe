@@ -229,21 +229,16 @@ RSpec.describe ExpositionService do
           }
         ]
 
-        file = nil
+        batch_request = nil
         VCR.use_cassette('services/exposition_service/upload_batch_file_200') do
-          file = service.upload_batch_file(request_data)
+          batch_request = service.upload_batch_file(request_data)
         end
 
         aggregate_failures do
-          expect(file["bytes"]).to eq(372)
-          expect(file["created_at"]).to eq(1743825080)
-          expect(file["expires_at"]).to eq(nil)
-          expect(file["filename"]).to eq("exposition-batch20250405-83656-vmf8ks.jsonl")
-          expect(file["id"]).to eq("file-JdhoBwvPwGcb5DVvZTkKwq")
-          expect(file["object"]).to eq("file")
-          expect(file["purpose"]).to eq("batch")
-          expect(file["status_details"]).to eq(nil)
-          expect(file["status"]).to eq("processed")
+          expect(batch_request.name).to eq "exposition-batch20250405-83656-vmf8ks"
+          expect(batch_request.status).to eq "requested"
+          expect(batch_request.input_file_id).to eq "file-JdhoBwvPwGcb5DVvZTkKwq"
+          expect(batch_request.input_file_uploaded_at.utc).to be_within(1.second).of Time.current
         end
       end
     end
