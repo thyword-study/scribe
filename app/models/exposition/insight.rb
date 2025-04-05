@@ -25,7 +25,7 @@
 #
 class Exposition::Insight < ApplicationRecord
   # Associations
-  belongs_to :exposition_content
+  belongs_to :exposition_content, class_name: "Exposition::Content"
 
   # Validations
   validates :exposition_content, presence: true
