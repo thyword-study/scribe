@@ -47,7 +47,7 @@
 class Exposition::Content < ApplicationRecord
   # Associations
   belongs_to :section
-  belongs_to :exposition_user_prompt
+  belongs_to :exposition_user_prompt, class_name: "Exposition::UserPrompt"
   has_many :exposition_alternative_interpretations, dependent: :destroy
   has_many :exposition_analyses, dependent: :destroy
   has_many :exposition_cross_references, dependent: :destroy

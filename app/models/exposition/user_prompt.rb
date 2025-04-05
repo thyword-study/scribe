@@ -24,7 +24,7 @@
 #
 class Exposition::UserPrompt < ApplicationRecord
   # Associations
-  belongs_to :exposition_system_prompt
+  belongs_to :exposition_system_prompt, class_name: "Exposition::SystemPrompt"
   has_one :exposition_content, dependent: :restrict_with_error
 
   # Validations
