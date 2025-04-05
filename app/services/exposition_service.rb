@@ -91,6 +91,26 @@ class ExpositionService
     response
   end
 
+  # Retrieves the content of a file using the provided file ID.
+  #
+  # This method fetches the content of a file from the OpenAI API using the
+  # given file ID. The content is returned as a string.
+  #
+  # @param file_id [String] The ID of the file to retrieve content for.
+  # @return [String] The content of the file.
+  # @raise [StandardError] If the API call fails, an error is raised.
+  def file_content(file_id)
+    begin
+      content = client.files.content(id: file_id)
+    rescue StandardError => e
+      Rails.logger.error "Error in ExpositionService#file_content: #{e.message}"
+
+      raise e
+    end
+
+    content
+  end
+
   # Retrieves a batch of responses using the provided batch ID.
   #
   # @param batch_id [String] The ID of the batch to be retrieved.
